@@ -30,13 +30,18 @@ sudo pip install virtualenv==1.11.4 &&
 # install packman
 sudo pip install https://github.com/cloudify-cosmo/packman/archive/develop.tar.gz
 
-# create cloudify components package
 cd /cloudify-packager/ &&
+
+# create package resources
+sudo pkm get -c linux-agent
 
 # LIMOR, PLEASE COMPLETE THE GET PROCESS HERE
 
+# create package
 sudo pkm pack -c linux-agent
 sudo pkm pack -c cloudify-ubuntu-agent
+
+# displace package for delivery
 sudo mkdir /cloudify-packager/output-packages
 sudo mv /cloudify/* /cloudify-packager/output-packages
 
