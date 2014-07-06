@@ -30,20 +30,20 @@ sudo pip install virtualenv==1.11.4 &&
 # install packman
 sudo pip install https://github.com/cloudify-cosmo/packman/archive/develop.tar.gz
 
-# create cloudify components package
 cd /cloudify-packager/ &&
 
 # create package resources
-sudo pkm get -c celery
 sudo pkm get -c manager
+sudo pkm get -c celery
 
 # LIMOR, PLEASE COMPLETE THE GET PROCESS HERE
 
-# package resources
-sudo pkm pack -c celery
+# create package
 sudo pkm pack -c manager
+sudo pkm pack -c celery
 sudo pkm pack -c cloudify-core
 
+# displace package for delivery
 sudo mkdir /cloudify-packager/output-packages
 sudo mv /cloudify/* /cloudify-packager/output-packages
 
