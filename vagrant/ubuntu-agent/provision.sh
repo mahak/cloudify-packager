@@ -25,6 +25,9 @@ curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | sudo
 # install packman
 sudo pip install https://github.com/cloudify-cosmo/packman/archive/develop.tar.gz
 
+# install virtualenv
+sudo pip install virtualenv==1.11.4 &&
+
 cd /cloudify-packager/ &&
 
 # create package resources
