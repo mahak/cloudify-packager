@@ -131,6 +131,7 @@ do
         sleep 5;
         c=$((c+1))
 done
+
 # export STORAGE_INDEX_URL="http://localhost:9200/cloudify_storage"
 echo "deleting index if exists..."
 curl --retry 5 --retry-delay 3 -XDELETE http://localhost:9200/cloudify_storage

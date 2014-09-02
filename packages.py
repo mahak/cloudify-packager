@@ -17,6 +17,45 @@
 from user_definitions import *
 
 # TODO: add support for "skip_get" and "skip_pack" flags.
+VARIABLES = {
+    "logstash": {
+
+    },
+    "manager_server_path": "{0}/manager/cloudify-manager-{1}/rest-service/manager_rest/".format(VIRTUALENVS_PATH, MANAGER_BRANCH),
+    "gunicorn_user": "root",
+    "manager_rest_port": "8100",
+    "manager_file_server_dir": "{0}/manager/resources".format(VIRTUALENVS_PATH),
+    "gunicorn_conf_path": "{0}/manager/config/conf/guni.conf".format(VIRTUALENVS_PATH),
+    "unicorn_user": "root",
+    "kibana_run_dir": "/opt/kibana3",
+    "kibana_port": "3000",
+    "nginx_rest_and_ui_port": "80",
+    "nginx_file_server_port": "53229",
+    "nginx_file_server_dir": "{0}/manager/resources".format(VIRTUALENVS_PATH),
+    "rabbitmq_port": "5672"
+    "elasticsearch_port": "9200"
+    "langohr_jar": "{0}/riemann/langohr/langohr.jar".format(COMPONENT_PACKAGES_PATH),
+    "manager_config": "{0}/manager/cloudify-manager-{1}/plugins/riemann-controller/riemann_controller/resources/manager.config".format(VIRTUALENVS_PATH, MANAGER_BRANCH)
+    "celery_init_path": "/etc/init/celeryd-cloudify-management.conf",
+    "celery_run_dir": "{0}/celery".format(VIRTUALENVS_PATH),
+    "ui_log_file": "/var/log/cloudify-ui/cosmo-ui.log",
+    "ui_user": "root",
+    "ui_run_dir": "/opt/cloudify-ui",
+    "ui_port": "9001",
+    "celery_work_dir": "{0}/celery/cloudify.management__worker".format(VIRTUALENVS_PATH),
+    "celery_workers_autoscale": "5,2"
+    "logstash_jar": "logstash.jar",
+    "logstash_log_file": "/var/log/logstash.out",
+    "logstash_conf_path": "/etc/logstash.conf",
+    "logstash_run_dir": "/opt/logstash",
+    "logstash_user": "root",
+    "logstash_events_queue": "cloudify-events",
+    "logstash_logs_queue": "cloudify-logs",
+    "logstash_test_tcp_port": "9999",
+    "logstash_events_index": "cloudify_events",
+    "elasticsearch_run_dir": "/opt/elasticsearch",
+    "elasticsearch_user": "root",
+}
 PACKAGES = {
     "cloudify-core": {
         "name": "cloudify-core",
@@ -32,15 +71,6 @@ PACKAGES = {
         "bootstrap_template": "cloudify-core-bootstrap.template",
         "bootstrap_log": "/var/log/cloudify-core-bootstrap.log",
         "overwrite_package": False,
-        "config_templates": {
-            "__params_celery": {
-                "init_path": "/etc/init/celeryd-cloudify-management.conf",
-                "run_dir": "{0}/celery".format(VIRTUALENVS_PATH),
-            },
-            "__params_manager": {
-                "port": "8100",
-            },
-        }
     },
     "cloudify-components": {
         "name": "cloudify-components",
@@ -61,44 +91,24 @@ PACKAGES = {
             "req_os": "precise",
         },
         "config_templates": {
-            "__template_file_nginx": {
+            "template_file_nginx": {
                 "template": "{0}/nginx/conf/default.conf.template".format(CONFIGS_PATH),
                 "output_file": "default.conf",
                 "config_dir": "config/nginx",
                 "dst_dir": "/etc/nginx/conf.d",
             },
-            "__params_nginx": {
-                "kibana_run_dir": "/opt/kibana3",
-                "kibana_port": "3000",
-                "rest_and_ui_port": "80",
-                "file_server_port": "53229",
-                "file_server_dir": "{0}/manager/resources".format(VIRTUALENVS_PATH),
-            },
-            "__template_file_nginx_init": {
+            "template_file_nginx_init": {
                 "template": "{0}/nginx/init/nginx.conf.template".format(CONFIGS_PATH),
                 "config_dir": "config/nginx",
                 "output_file": "nginx.conf",
                 "dst_dir": "/etc/init",
             },
-            "__params_rabbitmq": {
-                "port": "5672"
-            },
-            "__params_logstash": {
-                "port": "9999"
-            },
-            "__params_elasticsearch": {
-                "port": "9200"
-            },
-            "__params_riemann": {
-                "langohr_jar": "{0}/riemann/langohr/langohr.jar".format(COMPONENT_PACKAGES_PATH),
-                "manager_config": "{0}/manager/cloudify-manager-{1}/plugins/riemann-controller/riemann_controller/resources/manager.config".format(VIRTUALENVS_PATH, MANAGER_BRANCH)
-            },
-            "__template_file_riemann": {
+            "template_file_riemann": {
                 "template": "{0}/riemann/init/riemann.conf.template".format(CONFIGS_PATH),
                 "config_dir": "config/riemann/init",
                 "dst_dir": "/etc/init/riemann.conf",
             },
-            "__template_file_rabbitmq": {
+            "template_file_rabbitmq": {
                 "template": "{0}/rabbitmq/init/rabbitmq-server.conf.template".format(CONFIGS_PATH),
                 "config_dir": "config/rabbitmq",
                 "dst_dir": "/etc/init/rabbitmq-server.conf",
@@ -119,19 +129,11 @@ PACKAGES = {
         "bootstrap_template": "cloudify-ui-bootstrap.template",
         "bootstrap_log": "/var/log/cloudify-bootstrap.log",
         "config_templates": {
-            "__template_file_init": {
+            "template_file_init": {
                 "template": "{0}/cloudify-ui/init/cloudify-ui.conf.template".format(CONFIGS_PATH),
                 "output_file": "cloudify-ui.conf",
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
-            },
-            "__params_init": {
-                "log_file": "/var/log/cloudify-ui/cosmo-ui.log",
-                "user": "root",
-                "run_dir": "/opt/cloudify-ui",
-            },
-            "__params_ui": {
-                "port": "9001",
             },
         }
     },
@@ -153,7 +155,7 @@ PACKAGES = {
         "bootstrap_log": "/var/log/cloudify3-bootstrap.log",
         # TODO: CREATE INIT AND DEFAULTS FILES FROM TEMPLATES!
         "config_templates": {
-            "__config_dir": {
+            "config_dir": {
                 "files": "{0}/ubuntu-agent".format(CONFIGS_PATH),
                 "config_dir": "config",
                 "dst_dir": "{0}/manager/resources/packages/agents/templates/".format(VIRTUALENVS_PATH),
@@ -225,23 +227,13 @@ PACKAGES = {
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
             },
-            "__params_init": {
-                "rest_server_path": "{0}/manager/cloudify-manager-{1}/rest-service/manager_rest/".format(VIRTUALENVS_PATH, MANAGER_BRANCH),
-                "gunicorn_user": "root",
-                "gunicorn_conf_path": "{0}/manager/config/conf/guni.conf".format(VIRTUALENVS_PATH),
-                "unicorn_user": "root",
-                "rest_port": "8100",
-            },
-            "__template_file_conf": {
+            "template_file_conf": {
                 "template": "{0}/manager/conf/guni.conf.template".format(CONFIGS_PATH),
                 "output_file": "guni.conf",
                 "config_dir": "config/conf",
                 # "dst_dir": "/opt/manager/config/conf",
             },
-            "__params_conf": {
-                "file_server_dir": "{0}/manager/resources".format(VIRTUALENVS_PATH),
-            },
-            "__template_dir_init": {
+            "template_dir_init": {
                 "templates": "{0}/manager/init".format(CONFIGS_PATH),
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
@@ -270,18 +262,11 @@ PACKAGES = {
         "bootstrap_script": "{0}/celery-bootstrap.sh".format(SCRIPTS_PATH),
         "bootstrap_template": "celery-bootstrap.template",
         "config_templates": {
-            "__template_file_init": {
+            "template_file_init": {
                 "template": "{0}/celery/init/celeryd-cloudify-management.conf.template".format(CONFIGS_PATH),
                 "output_file": "celeryd-cloudify-management.conf",
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
-            },
-            "__params_init": {
-                "work_dir": "{0}/celery/cloudify.management__worker".format(VIRTUALENVS_PATH),
-                "base": "/opt/celery",
-                "rest_port": "80",
-                "file_server_port": "53229",
-                "workers_autoscale": "5,2"
             },
         }
     },
@@ -301,31 +286,18 @@ PACKAGES = {
         "bootstrap_script": "{0}/logstash-bootstrap.sh".format(SCRIPTS_PATH),
         "bootstrap_template": "logstash-bootstrap.template",
         "config_templates": {
-            "__template_file_init": {
+            "template_file_init": {
                 "template": "{0}/logstash/init/logstash.conf.template".format(CONFIGS_PATH),
                 "output_file": "logstash.conf",
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
             },
-            "__params_init": {
-                "jar": "logstash.jar",
-                "log_file": "/var/log/logstash.out",
-                "conf_path": "/etc/logstash.conf",
-                "run_dir": "/opt/logstash",
-                "user": "root",
-            },
-            "__template_file_conf": {
+            "template_file_conf": {
                 "template": "{0}/logstash/conf/logstash.conf.template".format(CONFIGS_PATH),
                 "output_file": "logstash.conf",
                 "config_dir": "config/conf",
                 "dst_dir": "/etc",
             },
-            "__params_conf": {
-                "events_queue": "cloudify-events",
-                "logs_queue": "cloudify-logs",
-                "test_tcp_port": "9999",
-                "events_index": "cloudify_events",
-            }
         }
     },
     "elasticsearch": {
@@ -344,24 +316,18 @@ PACKAGES = {
         "bootstrap_script": "{0}/elasticsearch-bootstrap.sh".format(SCRIPTS_PATH),
         "bootstrap_template": "elasticsearch-bootstrap.template",
         "config_templates": {
-            "__template_file_init": {
+            "template_file_init": {
                 "template": "{0}/elasticsearch/init/elasticsearch.conf.template".format(CONFIGS_PATH),
                 "output_file": "elasticsearch.conf",
                 "config_dir": "config/init",
                 "dst_dir": "/etc/init",
             },
-            "__params_init": {
-                "run_dir": "/opt/elasticsearch",
-                "user": "root",
-            },
-            "__template_file_conf": {
+            "template_file_conf": {
                 "template": "{0}/elasticsearch/init/elasticsearch.conf.template".format(CONFIGS_PATH),
                 "output_file": "elasticsearch.conf",
                 "config_dir": "config/conf",
                 "dst_dir": "/etc/init",
             },
-            "__params_conf": {
-            }
         }
     },
     "kibana3": {
