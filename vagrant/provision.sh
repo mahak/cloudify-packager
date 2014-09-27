@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo bootstrapping packman...
 
 # update and install prereqs
