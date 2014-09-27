@@ -35,4 +35,5 @@ cd c:\\
 rmdir /s /q C:\\CloudifyAgent\\cloudify-rest-client
 rmdir /s /q C:\\CloudifyAgent\\cloudify-plugins-common
 rmdir /s /q C:\\CloudifyAgent\\cloudify-manager
+rmdir /s /q C:\\CloudifyAgent\\cloudify-script-plugin
 7z a -r -sfx -x!.* Cloudify.exe c:\\CloudifyAgent\\*
